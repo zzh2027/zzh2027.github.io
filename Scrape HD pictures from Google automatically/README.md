@@ -2,7 +2,7 @@
 All pictures will be stored in the folder specified
 You will required to download a Chrome driver first.
 
-#### Codes that you will need
+### Codes that you will need
 
 #### from GoogleScraper import ScrapeGoogle
 
