@@ -3,9 +3,12 @@ All pictures will be stored in the folder specified
 You will required to download a Chrome driver first.
 
 ### Codes that you will need
-from GoogleScraper import ScrapeGoogle
-test = ScrapeGoogle(folder1, folder2)
-test.getPic(topic, num_pic = 50, pic_size = 'large')
+
+# from GoogleScraper import ScrapeGoogle
+
+# test = ScrapeGoogle(folder1, folder2)
+
+# test.getPic(topic, num_pic = 50, pic_size = 'large')
 
 
 ### Explanation
