@@ -6,7 +6,7 @@ You will required to download a Chrome driver first.
 
 #### from GoogleScraper import ScrapeGoogle
 
-#### test = ScrapeGoogle(folder1, folder2)
+#### test = ScrapeGoogle(headless, folder1, folder2)
 
 #### test.getPic(topic, num_pic = 50, pic_size = 'large')
 
@@ -14,7 +14,8 @@ You will required to download a Chrome driver first.
 ### Explanation
 1. folder1 has your Chrome.driver and folder2 is the folder where you would like to store your pictures
 2. If you are not aware of what Chrome driver is, go to this link:https://chromedriver.chromium.org/downloads
-3. you wiil be required to pass the topic and number of pictures you want to download as parameters into this function and RUN
+3. The first parameter in this function is headless, if it is 1, then it is headless, or not.
+4. you wiil be required to pass the topic and number of pictures you want to download as parameters into this function and RUN
 
 
 
