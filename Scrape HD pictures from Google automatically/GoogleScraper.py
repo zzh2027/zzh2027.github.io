@@ -1,20 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# ## Set up
-
-# In[ ]:
-
-
 from selenium.webdriver.common.keys import Keys
-from selenium import webdriver
-from selenium.webdriver import Chrome
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import ElementClickInterceptedException,ElementNotInteractableException, NoSuchElementException, StaleElementReferenceException
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC 
-from selenium.webdriver.common.by import By
 import base64
 import requests
 from requests.exceptions import InvalidSchema
@@ -26,27 +12,31 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 import re
-
-
-# In[24]:
-
+import os
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC 
+from selenium.webdriver.common.by import By
 
 class ScrapeGoogle(object):
     
-    def __init__(self, web_root = r"C:\Users\huyia\1_jupyter\爬数据爬图片", pic_root = r"C:\Users\huyia\OneDrive\Pictures"):
-        from selenium import webdriver
-        from selenium.webdriver import Chrome
-        import os
+    def __init__(self, headless = None, web_root = r"C:\Users\huyia\1_jupyter\爬数据爬图片", pic_root = r"C:\Users\huyia\OneDrive\Pictures"):
+        
         os.chdir(web_root)
         self.web_root = web_root
         self.pic_root = pic_root
-        self.driver = Chrome()
+        from selenium.webdriver.chrome.options import Options
+        chrome_options = Options()
+        if headless == 1:
+            chrome_options.add_argument('--headless')
+        driver = webdriver.Chrome(chrome_options=chrome_options)
+        self.driver = driver
+
+        
         
     def __clickable(self, elem_id, typ = 'id'):
-        from selenium.webdriver.common.action_chains import ActionChains
-        from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions as EC 
-        from selenium.webdriver.common.by import By
+        
         ## wait until the button can be clicked
         driver = self.driver
         wait = WebDriverWait(driver, 10)
@@ -60,32 +50,15 @@ class ScrapeGoogle(object):
     
     def __rollandclick(self, button):
         from selenium.webdriver.common.action_chains import ActionChains
-        from loguru import logger
-        logger.add('Search pictures in Google.log', encoding = 'utf-8', retention = '3 days')
         try:
             button.click()
         except Exception as e:
-            logger.info(e)
             ActionChains(self.driver).key_down(Keys.DOWN).perform()
             self.__rollandclick(button)
         
     def getPic(self, topic = 'Avengers', num_pic = 50, pic_size = 'large',
                      url = "https://www.google.com/?&bih=937&biw=1920&hl=en"):
-        from selenium.webdriver.common.keys import Keys
-        from selenium.webdriver.support.ui import Select
-        from selenium.common.exceptions import ElementClickInterceptedException,ElementNotInteractableException, NoSuchElementException, StaleElementReferenceException
-        import base64
-        import requests
-        from requests.exceptions import InvalidSchema
-        import time
-        import json
-        import os
-        import glob
-        import matplotlib.pyplot as plt
-        import matplotlib.image as mpimg
-        import numpy as np
-        import re
-        import os
+        
         driver = self.driver
         driver.get(url)
         driver.maximize_window()
@@ -125,21 +98,33 @@ class ScrapeGoogle(object):
             except NoSuchElementException:
                 continue
             self.__rollandclick(prev)
-            time.sleep(2)
+            time.sleep(4)##
+            print('等四秒钟让图片加载完')
             ## 这是可以保存的图片链接
             path = """//*[@id="Sva75c"]/div/div/div[3]/div[2]/c-wiz/div[1]/div[1]/div/div[2]/a/img"""
             url = driver.find_element_by_xpath(path).get_attribute('src')
+            def request_download(IMAGE_URL, img_name, error = False):
+                """
+                此方程用于通过图片链接下载到本地相应文件夹
+                """
+                if error:
+                    r = base64.b64decode(IMAGE_URL[23:].replace("\n",""))
+                    ## png无损压缩 jpg失真压缩
+                    with open(f'{img_name}.png', 'wb') as f:
+                        f.write(r) 
+                else:
+                    r = requests.get(IMAGE_URL)
+                    ## png无损压缩 jpg失真压缩
+                    with open(f'{img_name}.png', 'wb') as f:
+                        f.write(r.content) 
             time.sleep(2)
             try:
-                pic = requests.get(url)
-                with open(f'{i}.png', 'wb') as f:
-                    f.write(pic.content)
+                r = requests.get(url)
+                request_download(url, i, error = False)
             except InvalidSchema:
-                pic = base64.b64decode(url[23:].replace("\n",""))
-                with open(f'{i}.jpg', 'wb') as f:
-                    f.write(pic)
+                request_download(url, i, error = True)
         os.chdir(self.pic_root)
-        logger.remove()
+        driver.quit()
     def removeSmall(self):
         import matplotlib.image as mpimg
         local_folder = self.download
@@ -158,11 +143,4 @@ class ScrapeGoogle(object):
                 ## Filter out small pictures less than 200 KB
                 os.remove(pic)
                 removed+=1
-                logger.info(f'{removed} picutre removed', end = '\r')
-
-                
-if __name__ == 'main':
-    test = ScrapeGoogle()
-    test.getPic('黄景行', 5)## scrape
-    test.removeSmall()## remove small pictures
 
