@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[11]:
-
-
 class Painting(object):
+    
     def __init__(self):
         print('函数1：self.red_heart(num)\n\t@num-->红心维度')
         pass
@@ -40,8 +38,6 @@ if __name__ == '__main__':
     a = Painting()
     a.red_heart(9)
 
-
-# In[ ]:
 
 
 
