@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[50]:
-
 
 def getSquaredRoot(num, threshold, gradient, direction = 'down'):
     
