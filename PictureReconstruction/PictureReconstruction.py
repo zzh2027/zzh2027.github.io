@@ -87,6 +87,6 @@ class Fuzzy(object):
 
 if __name__ == 'main':
     test = mpimg.imread("test.jpg")
-    s = SVDImg(test)    
+    s = Fuzzy(test)    
     s.show_img(0.01)
 
