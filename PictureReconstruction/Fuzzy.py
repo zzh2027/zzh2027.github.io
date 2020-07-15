@@ -1,13 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
 
 ### read your picture
-
-
-# In[32]:
 
 
 class SVDImg(object):
