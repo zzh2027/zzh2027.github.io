@@ -5,10 +5,9 @@
 ### read your picture
 
 
-class SVDImg(object):
+class Fuzzy(object):
     def __init__(self, img):
         
-
         """
         原矩阵的转置与原矩阵的矩阵乘法，得到的矩阵，求其特征向量，其所有的特征向量便是右奇异矩阵【Right Singular Matrix】
         同理， 原矩阵与原矩阵的矩阵乘法，求得的矩阵的特征向量便是左奇异矩阵【Left Singular Matrix】
