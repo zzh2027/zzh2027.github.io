@@ -281,10 +281,10 @@ print(f"Today: {moment_year}{date_in_file_name}")
 
 # 连接 MySQL 数据库并写入数据  
 def get_mysql_connection():
-    mysql_connect = pymysql.connect(host='dev-dsk-wangting-2a-25bc2431.us-west-2.amazon.com', 
-                              user='avs_user', 
-                              password='avs_pro', 
-                              database='AVS_proactive',
+    mysql_connect = pymysql.connect(host='your host', 
+                              user='your user', 
+                              password='your password', 
+                              database='your database',
                               charset='utf8') #服务器名,账户,密码,数据库名
     mysql_cursor = mysql_connect.cursor()
     return mysql_connect, mysql_cursor
@@ -293,11 +293,11 @@ try:
     mysql_connect, mysql_cursor = get_mysql_connection()
 
     # 连接 RedShift 数据库
-    rs_connect = psycopg2.connect(database="rsbidw",
-                            user="avs_user",
-                            password="A21sP22oR$",
-                            host="rsbi-analytics.clszsz7jap6y.us-east-1.redshift.amazonaws.com",
-                            port="8192")
+    rs_connect = psycopg2.connect(database="your database",
+                            user="your user",
+                            password="your password",
+                            host="your host",
+                            port="your port")
 
     rs_cursor = rs_connect.cursor()
 except Exception as e:
